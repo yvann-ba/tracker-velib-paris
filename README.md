@@ -1,138 +1,93 @@
-# 🚲 Vélib' Live - Visualisation Temps Réel
+# 🚲 Paris Vélib' Real-Time Map
 
-Une application React moderne pour visualiser en temps réel les données des stations Vélib' de Paris avec Mapbox GL JS.
+A beautiful real-time visualization of Paris bike-sharing stations using Mapbox GL.
 
-![Vélib' Live Preview](https://via.placeholder.com/800x450/1a1a2e/10b981?text=Vélib'+Live+Paris)
+![Vélib' Map](https://img.shields.io/badge/React-19-blue) ![Mapbox](https://img.shields.io/badge/Mapbox_GL-3.17-orange) ![TypeScript](https://img.shields.io/badge/TypeScript-5.9-blue)
 
-## ✨ Fonctionnalités
+## 🎯 What is this?
 
-- **📍 Marqueurs dynamiques** - Points colorés selon la disponibilité (vert → rouge)
-- **🔥 Heatmap** - Carte de chaleur de la densité des vélos
-- **⭕ Clusters intelligents** - Regroupement dynamique avec Supercluster
-- **📊 Statistiques en direct** - Vélos mécaniques/électriques, places libres
-- **🔄 Auto-refresh** - Mise à jour automatique chaque minute
-- **🌙 Design sombre** - Interface moderne et élégante
+This app displays **real-time availability** of all 1,400+ Vélib' bike stations in Paris:
+- See available bikes (electric ⚡ and mechanical 🚴)
+- View empty docks for returning bikes
+- Explore different visualization modes
 
-## 🚀 Démarrage Rapide
+## 📊 Data Source
 
-### Prérequis
+Uses the official **Vélib' Métropole GBFS API** (General Bikeshare Feed Specification):
+- Station locations & capacity
+- Real-time bike availability (updated every ~30 seconds)
+- Station status (open/closed)
 
-- Node.js 18+ (recommandé: 20+)
-- Un token Mapbox (gratuit sur [mapbox.com](https://www.mapbox.com))
+## 🗺️ Visualization Modes
 
-### Installation
+| Mode | Description |
+|------|-------------|
+| **Clusters** | Groups nearby stations into bubbles showing total bikes |
+| **Heatmap** | Color intensity shows bike concentration across the city |
+| **Markers** | Individual station pins with color-coded availability |
+
+## 🚀 Quick Start
+
+### 1. Get a Mapbox Token (Free)
+
+1. Create a free account at [mapbox.com](https://mapbox.com)
+2. Go to your [Account page](https://account.mapbox.com/access-tokens/)
+3. Copy your **Default public token**
+
+### 2. Clone & Setup
 
 ```bash
-# Cloner le projet
-git clone <votre-repo>
-cd Mapbox-realtime-bike
+# Clone the repo
+git clone https://github.com/YOUR_USERNAME/mapbox-realtime-bike.git
+cd mapbox-realtime-bike
 
-# Installer les dépendances
+# Install dependencies
 npm install
 
-# Configurer Mapbox
-# Créer un fichier .env à la racine avec:
-echo "VITE_MAPBOX_TOKEN=votre_token_mapbox" > .env
+# Create your environment file
+cp .env.example .env
+```
 
-# Lancer le serveur de développement
+### 3. Add Your Token
+
+Edit the `.env` file and paste your Mapbox token:
+
+```env
+VITE_MAPBOX_TOKEN=pk.your_token_here
+```
+
+### 4. Run
+
+```bash
 npm run dev
 ```
 
-L'application sera accessible sur `http://localhost:5173`
+Open [http://localhost:5173](http://localhost:5173) in your browser.
 
-## 🔑 Configuration Mapbox
+## 🛠️ Tech Stack
 
-1. Créez un compte gratuit sur [mapbox.com](https://www.mapbox.com)
-2. Récupérez votre token d'accès dans votre dashboard
-3. Créez un fichier `.env` à la racine du projet:
+- **React 19** - UI framework
+- **TypeScript** - Type safety
+- **Mapbox GL** - Interactive maps
+- **Vite** - Fast development server
+- **Axios** - API requests
 
-```env
-VITE_MAPBOX_TOKEN=pk.eyJ1IjoiVk9UUkVfVVNFUk5BTUUiLCJhIjoiY2x...
-```
-
-## 📡 Sources de Données
-
-Cette application utilise les APIs ouvertes Vélib' Métropole:
-
-- **API GBFS** (mise à jour chaque minute):
-  - [Station Information](https://velib-metropole-opendata.smovengo.cloud/opendata/Velib_Metropole/station_information.json)
-  - [Station Status](https://velib-metropole-opendata.smovengo.cloud/opendata/Velib_Metropole/station_status.json)
-
-- **OpenData Paris**:
-  - [Vélib - Disponibilité temps réel](https://opendata.paris.fr/explore/dataset/velib-disponibilite-en-temps-reel)
-
-## 🏗️ Architecture
+## 📁 Project Structure
 
 ```
 src/
 ├── components/
-│   ├── Map/
-│   │   ├── MapContainer.tsx    # Conteneur principal
-│   │   ├── MarkersLayer.tsx    # Couche marqueurs
-│   │   ├── HeatmapLayer.tsx    # Couche heatmap
-│   │   └── ClustersLayer.tsx   # Couche clusters
-│   ├── Controls/
-│   │   ├── LayerToggle.tsx     # Bascule entre couches
-│   │   └── StatsPanel.tsx      # Statistiques temps réel
-│   └── UI/
-│       └── Popup.tsx           # Info station
-├── services/
-│   └── velibService.ts         # Appels API
-├── hooks/
-│   └── useVelibData.ts         # Hook données temps réel
-├── types/
-│   └── velib.ts                # Types TypeScript
-└── utils/
-    └── dataTransform.ts        # Utilitaires Supercluster
+│   ├── Controls/     # Layer toggles, stats panel
+│   └── Map/          # Map layers (clusters, heatmap, markers)
+├── services/         # API calls to Vélib' GBFS
+├── types/            # TypeScript definitions
+└── App.tsx           # Main application
 ```
 
-## 🛠️ Technologies
+## 📝 License
 
-- **React 19** + TypeScript
-- **Vite** - Build tool rapide
-- **Mapbox GL JS** - Rendu cartographique WebGL
-- **react-map-gl** - Bindings React pour Mapbox
-- **Supercluster** - Clustering côté client
-- **Axios** - Requêtes HTTP
+MIT - Feel free to use and modify!
 
-## 📦 Scripts NPM
+---
 
-```bash
-npm run dev      # Serveur de développement
-npm run build    # Build de production
-npm run preview  # Prévisualiser le build
-npm run lint     # Vérification ESLint
-```
-
-## 🎨 Personnalisation
-
-### Changer le style de carte
-
-Dans `MapContainer.tsx`, modifiez `mapStyle`:
-
-```typescript
-mapStyle="mapbox://styles/mapbox/dark-v11"    // Sombre (défaut)
-mapStyle="mapbox://styles/mapbox/light-v11"   // Clair
-mapStyle="mapbox://styles/mapbox/streets-v12" // Rues
-mapStyle="mapbox://styles/mapbox/satellite-v9" // Satellite
-```
-
-### Modifier l'intervalle de refresh
-
-Dans `App.tsx`:
-
-```typescript
-const { geoJSON, stats, ... } = useVelibData({
-  refreshInterval: 30000, // 30 secondes
-  autoRefresh: true,
-});
-```
-
-## 📄 License
-
-MIT License - Libre d'utilisation et de modification.
-
-## 🙏 Crédits
-
-- Données: [Vélib' Métropole](https://www.velib-metropole.fr) / [OpenData Paris](https://opendata.paris.fr)
-- Cartographie: [Mapbox](https://www.mapbox.com)
+Made with ❤️ for the Paris cycling community
