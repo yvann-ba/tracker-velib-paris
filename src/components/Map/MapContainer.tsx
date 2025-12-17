@@ -1,11 +1,10 @@
 import { useState, useCallback, useRef, useEffect } from 'react';
-import Map, { NavigationControl } from 'react-map-gl/mapbox';
+import Map, { NavigationControl, Layer } from 'react-map-gl/mapbox';
 import type { MapRef, ViewStateChangeEvent } from 'react-map-gl/mapbox';
-import type { Station, LayerVisibility, StationGeoJSON, BikeTrip } from '../../types/velib';
+import type { Station, LayerVisibility, StationGeoJSON } from '../../types/velib';
 import { MarkersLayer } from './MarkersLayer';
 import { HeatmapLayer } from './HeatmapLayer';
 import { ClustersLayer } from './ClustersLayer';
-import { FlowLayer } from './FlowLayer';
 import { Popup } from '../UI/Popup';
 import 'mapbox-gl/dist/mapbox-gl.css';
 import './MapContainer.css';
@@ -16,19 +15,18 @@ const MAPBOX_TOKEN = import.meta.env.VITE_MAPBOX_TOKEN;
 const INITIAL_VIEW_STATE = {
   latitude: 48.8566,
   longitude: 2.3522,
-  zoom: 12.5,
-  bearing: 0,
-  pitch: 0, // Flat view for cleaner look
+  zoom: 13,
+  bearing: -17.6,
+  pitch: 45, // 3D view
 };
 
 interface MapContainerProps {
   geoJSON: StationGeoJSON;
   layerVisibility: LayerVisibility;
   isLoading: boolean;
-  trips: BikeTrip[];
 }
 
-export function MapContainer({ geoJSON, layerVisibility, isLoading, trips }: MapContainerProps) {
+export function MapContainer({ geoJSON, layerVisibility, isLoading }: MapContainerProps) {
   const mapRef = useRef<MapRef>(null);
   const [viewState, setViewState] = useState(INITIAL_VIEW_STATE);
   const [selectedStation, setSelectedStation] = useState<Station | null>(null);
@@ -41,7 +39,7 @@ export function MapContainer({ geoJSON, layerVisibility, isLoading, trips }: Map
 
   const handleStationClick = useCallback((station: Station) => {
     setSelectedStation(station);
-    
+
     mapRef.current?.flyTo({
       center: [station.lon, station.lat],
       zoom: Math.max(viewState.zoom, 15),
@@ -102,7 +100,7 @@ export function MapContainer({ geoJSON, layerVisibility, isLoading, trips }: Map
           <span>Loading...</span>
         </div>
       )}
-      
+
       <Map
         ref={mapRef}
         {...viewState}
@@ -114,9 +112,38 @@ export function MapContainer({ geoJSON, layerVisibility, isLoading, trips }: Map
         cursor={cursor}
         maxZoom={18}
         minZoom={10}
+        maxPitch={60}
         attributionControl={false}
+        terrain={{ source: 'mapbox-dem', exaggeration: 1.5 }}
       >
-        <NavigationControl position="top-right" showCompass={false} />
+        <NavigationControl position="top-right" showCompass={true} visualizePitch={true} />
+
+        {/* Sky layer for atmosphere */}
+        <Layer
+          id="sky"
+          type="sky"
+          paint={{
+            'sky-type': 'atmosphere',
+            'sky-atmosphere-sun': [0.0, 0.0],
+            'sky-atmosphere-sun-intensity': 15
+          }}
+        />
+
+        {/* 3D Buildings */}
+        <Layer
+          id="3d-buildings"
+          source="composite"
+          source-layer="building"
+          filter={['==', 'extrude', 'true']}
+          type="fill-extrusion"
+          minzoom={15}
+          paint={{
+            'fill-extrusion-color': '#242b35',
+            'fill-extrusion-height': ['get', 'height'],
+            'fill-extrusion-base': ['get', 'min_height'],
+            'fill-extrusion-opacity': 0.6
+          }}
+        />
 
         {mapLoaded && (
           <>
@@ -146,18 +173,13 @@ export function MapContainer({ geoJSON, layerVisibility, isLoading, trips }: Map
                 onMouseLeave={handleMouseLeave}
               />
             )}
-
-            {/* Flow layer - animated bike trips */}
-            {layerVisibility.flow && (
-              <FlowLayer trips={trips} />
-            )}
           </>
         )}
       </Map>
 
       {/* Station popup */}
       {selectedStation && (
-        <div 
+        <div
           className="popup-overlay"
           style={{
             position: 'absolute',

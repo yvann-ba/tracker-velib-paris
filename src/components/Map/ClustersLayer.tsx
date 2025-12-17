@@ -35,7 +35,7 @@ export function ClustersLayer({
 
   const handleClusterClick = useCallback((clusterId: number) => {
     if (!supercluster) return;
-    
+
     // Obtenir le zoom pour expanser le cluster
     const expansionZoom = Math.min(
       supercluster.getClusterExpansionZoom(clusterId),
@@ -48,7 +48,7 @@ export function ClustersLayer({
 
   const handleStationMarkerClick = useCallback((properties: ClusterProperties) => (e: React.MouseEvent) => {
     e.stopPropagation();
-    
+
     // Trouver la station correspondante dans geoJSON
     const stationFeature = geoJSON.features.find(f => f.properties.id === properties.id);
     if (stationFeature) {
@@ -82,17 +82,15 @@ export function ClustersLayer({
                 onMouseEnter={onMouseEnter}
                 onMouseLeave={onMouseLeave}
                 style={{
-                  width: `${radius * 2}px`,
-                  height: `${radius * 2}px`,
-                  backgroundColor: color,
-                  boxShadow: `0 0 ${radius}px ${color}`,
+                  width: `${radius * 1.5}px`, // Slightly smaller
+                  height: `${radius * 1.5}px`,
+                  // Pass color as CSS variable for the gradient/glow
+                  ['--cluster-color' as any]: color,
                 }}
               >
                 <div className="cluster-inner">
                   <span className="cluster-count">{formatNumber(pointCount)}</span>
-                  <span className="cluster-bikes">🚲 {formatNumber(totalBikes)}</span>
                 </div>
-                <div className="cluster-ring" style={{ borderColor: color }} />
               </div>
             </Marker>
           );
@@ -116,8 +114,7 @@ export function ClustersLayer({
               onMouseEnter={onMouseEnter}
               onMouseLeave={onMouseLeave}
               style={{
-                backgroundColor: stationColor,
-                boxShadow: `0 0 8px ${stationColor}`,
+                ['--station-color' as any]: stationColor,
               }}
             >
               <span className="station-bikes">{properties.totalBikes}</span>

@@ -3,12 +3,12 @@ import { MapContainer } from './components/Map/MapContainer';
 import { LayerToggle } from './components/Controls/LayerToggle';
 import { StatsPanel } from './components/Controls/StatsPanel';
 import { useVelibData } from './hooks/useVelibData';
-import { useSimulatedTrips } from './hooks/useSimulatedTrips';
+
 import type { LayerVisibility, LayerType } from './types/velib';
 import './App.css';
 
 function App() {
-  const { stations, geoJSON, stats, isLoading, error, lastUpdate, refresh } = useVelibData({
+  const { geoJSON, stats, isLoading, error, lastUpdate, refresh } = useVelibData({
     refreshInterval: 60000,
     autoRefresh: true,
   });
@@ -16,15 +16,10 @@ function App() {
   const [layerVisibility, setLayerVisibility] = useState<LayerVisibility>({
     markers: false,
     heatmap: false,
-    clusters: false,
-    flow: true, // Flow mode enabled by default
+    clusters: true, // Clusters enabled by default
   });
 
-  // Simulated trips for flow visualization
-  const { trips, electricCount, mechanicalCount } = useSimulatedTrips({
-    stations,
-    enabled: layerVisibility.flow,
-  });
+
 
   const handleLayerToggle = useCallback((layer: LayerType) => {
     setLayerVisibility((prev) => ({
@@ -48,9 +43,9 @@ function App() {
         <div className="header-brand">
           <div className="brand-logo">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-              <circle cx="5.5" cy="17.5" r="3.5"/>
-              <circle cx="18.5" cy="17.5" r="3.5"/>
-              <path d="M15 6a1 1 0 100-2 1 1 0 000 2zm-3 11.5V14l-3-3 4-3 2 3h3"/>
+              <circle cx="5.5" cy="17.5" r="3.5" />
+              <circle cx="18.5" cy="17.5" r="3.5" />
+              <path d="M15 6a1 1 0 100-2 1 1 0 000 2zm-3 11.5V14l-3-3 4-3 2 3h3" />
             </svg>
           </div>
           <div className="brand-text">
@@ -82,7 +77,6 @@ function App() {
           geoJSON={geoJSON}
           layerVisibility={layerVisibility}
           isLoading={isLoading}
-          trips={trips}
         />
 
         {/* Controls overlay */}
@@ -96,21 +90,6 @@ function App() {
               isLoading={isLoading}
             />
 
-            {/* Flow stats when flow mode is active */}
-            {layerVisibility.flow && (electricCount > 0 || mechanicalCount > 0) && (
-              <div className="glass-panel flow-stats">
-                <div className="flow-stat">
-                  <span className="flow-stat-dot electric" />
-                  <span className="flow-stat-value">{electricCount}</span>
-                  <span className="flow-stat-label">Electric</span>
-                </div>
-                <div className="flow-stat">
-                  <span className="flow-stat-dot mechanical" />
-                  <span className="flow-stat-value">{mechanicalCount}</span>
-                  <span className="flow-stat-label">Classic</span>
-                </div>
-              </div>
-            )}
           </div>
 
           <div className="controls-right">

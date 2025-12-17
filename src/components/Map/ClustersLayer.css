@@ -2,6 +2,7 @@
    CLUSTERS LAYER - Minimalist
    =================================== */
 
+/* Glassmorphism Cluster Style */
 .cluster-marker {
   border-radius: 50%;
   cursor: pointer;
@@ -9,14 +10,49 @@
   align-items: center;
   justify-content: center;
   position: relative;
-  transition: all 0.2s ease;
-  border: 2px solid rgba(255, 255, 255, 0.2);
-  backdrop-filter: blur(4px);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  /* Glass effect */
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  box-shadow:
+    0 4px 6px -1px rgba(0, 0, 0, 0.1),
+    0 2px 4px -1px rgba(0, 0, 0, 0.06),
+    inset 0 0 20px rgba(255, 255, 255, 0.05);
+}
+
+.cluster-marker::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  padding: 2px;
+  /* Border width for gradient */
+  background: conic-gradient(from 0deg, transparent, var(--cluster-color, rgba(255, 255, 255, 0.5)), transparent);
+  -webkit-mask:
+    linear-gradient(#fff 0 0) content-box,
+    linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  opacity: 0.8;
+  animation: spin 4s linear infinite;
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 .cluster-marker:hover {
-  transform: scale(1.1);
+  transform: scale(1.15);
   border-color: rgba(255, 255, 255, 0.5);
+  box-shadow: 0 0 20px var(--cluster-color, rgba(255, 255, 255, 0.2));
   z-index: 100;
 }
 
@@ -25,44 +61,23 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 1px;
   color: white;
+  z-index: 2;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
 }
 
 .cluster-count {
-  font-size: 13px;
-  font-weight: 600;
-  font-family: 'SF Mono', monospace;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: -0.5px;
+  font-family: 'Inter', sans-serif;
 }
 
 .cluster-bikes {
-  font-size: 9px;
-  font-weight: 500;
-  opacity: 0.8;
+  display: none;
 }
 
-.cluster-ring {
-  position: absolute;
-  top: -5px;
-  left: -5px;
-  right: -5px;
-  bottom: -5px;
-  border-radius: 50%;
-  border: 1px solid;
-  opacity: 0;
-  animation: cluster-pulse 2s ease-out infinite;
-}
-
-@keyframes cluster-pulse {
-  0% {
-    transform: scale(1);
-    opacity: 0.4;
-  }
-  100% {
-    transform: scale(1.4);
-    opacity: 0;
-  }
-}
+/* Removed ring animation */
 
 .cluster-marker:hover .cluster-ring {
   animation: none;
@@ -71,20 +86,23 @@
 
 /* Individual station */
 .station-point {
-  width: 24px;
-  height: 24px;
+  width: 12px;
+  /* Smaller */
+  height: 12px;
   border-radius: 50%;
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
-  border: 2px solid rgba(255, 255, 255, 0.3);
+  border: 1px solid rgba(255, 255, 255, 0.2);
   transition: all 0.15s ease;
+  background-color: rgba(30, 41, 59, 0.8) !important;
+  /* Dark slate transparent */
 }
 
 .station-point:hover {
-  transform: scale(1.2);
-  border-color: rgba(255, 255, 255, 0.7);
+  transform: scale(1.3);
+  border-color: rgba(255, 255, 255, 0.6);
   z-index: 100;
 }
 

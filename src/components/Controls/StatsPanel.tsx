@@ -13,8 +13,8 @@ export function StatsPanel({ stats, onRefresh, isLoading }: StatsPanelProps) {
     <div className="stats-panel">
       {/* Total bikes */}
       <div className="stat-item">
-        <span className="stat-value accent">{stats.totalBikes.toLocaleString('fr-FR')}</span>
-        <span className="stat-label">Vélos</span>
+        <span className="stat-value accent">{stats.totalBikes.toLocaleString('en-US')}</span>
+        <span className="stat-label">Total Bikes</span>
       </div>
 
       <div className="stat-divider" />
@@ -24,21 +24,21 @@ export function StatsPanel({ stats, onRefresh, isLoading }: StatsPanelProps) {
         <div className="stat-bikes">
           <div className="stat-bike">
             <span className="stat-bike-dot electric" />
-            <span className="stat-bike-value">{stats.electricBikes.toLocaleString('fr-FR')}</span>
+            <span className="stat-bike-value">{stats.electricBikes.toLocaleString('en-US')}</span>
           </div>
           <div className="stat-bike">
             <span className="stat-bike-dot mechanical" />
-            <span className="stat-bike-value">{stats.mechanicalBikes.toLocaleString('fr-FR')}</span>
+            <span className="stat-bike-value">{stats.mechanicalBikes.toLocaleString('en-US')}</span>
           </div>
         </div>
-        <span className="stat-label">Élec / Classic</span>
+        <span className="stat-label">Elec / Mech</span>
       </div>
 
       <div className="stat-divider" />
 
       {/* Stations */}
       <div className="stat-item">
-        <span className="stat-value">{stats.activeStations.toLocaleString('fr-FR')}</span>
+        <span className="stat-value">{stats.activeStations.toLocaleString('en-US')}</span>
         <span className="stat-label">Stations</span>
       </div>
 

@@ -78,16 +78,18 @@ export function getClusterRadius(pointCount: number): number {
   return Math.min(baseRadius + scale * 15, 50);
 }
 
-/**
- * Retourne une couleur pour un cluster basée sur le ratio de disponibilité
- * New minimalist blue theme
+/*
+ * New minimalist sombre theme
  */
 export function getClusterColor(totalBikes: number, capacity: number): string {
   const ratio = capacity > 0 ? totalBikes / capacity : 0;
-  
-  if (ratio >= 0.5) return '#38bdf8'; // Bright cyan - well stocked
-  if (ratio >= 0.3) return '#818cf8'; // Purple/indigo - moderate
-  if (ratio >= 0.15) return '#f59e0b'; // Amber - low
-  return '#f87171'; // Red - critical
+
+  // Using somewhat clearer colors but keeping them darker/muted in the CSS override effectively,
+  // but here we return the 'base' color which might show through borders or if we remove !important.
+  // Actually, let's return colors that look good on dark map.
+  if (ratio >= 0.5) return '#0ea5e9'; // Sky 500
+  if (ratio >= 0.25) return '#6366f1'; // Indigo 500
+  if (ratio >= 0.1) return '#d946ef'; // Fuschia 500
+  return '#64748b'; // Slate 500 (Empty/Low)
 }
 

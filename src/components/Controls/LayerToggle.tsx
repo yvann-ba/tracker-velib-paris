@@ -7,12 +7,7 @@ interface LayerToggleProps {
 }
 
 // SVG icons for each layer
-const icons: Record<LayerType, JSX.Element> = {
-  flow: (
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-      <path d="M22 12h-4l-3 9L9 3l-3 9H2" />
-    </svg>
-  ),
+const icons: Record<LayerType, React.ReactElement> = {
   markers: (
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
       <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z" />
@@ -40,13 +35,12 @@ const icons: Record<LayerType, JSX.Element> = {
 };
 
 const labels: Record<LayerType, string> = {
-  flow: 'Flow',
   markers: 'Points',
-  heatmap: 'Heat',
+  heatmap: 'Heatmap',
   clusters: 'Clusters',
 };
 
-const LAYERS: LayerType[] = ['flow', 'clusters', 'heatmap', 'markers'];
+const LAYERS: LayerType[] = ['clusters', 'heatmap', 'markers'];
 
 export function LayerToggle({ visibility, onToggle }: LayerToggleProps) {
   return (

@@ -98,13 +98,12 @@ export interface ClusterProperties {
 }
 
 // Types pour les couches de visualisation
-export type LayerType = 'markers' | 'heatmap' | 'clusters' | 'flow';
+export type LayerType = 'markers' | 'heatmap' | 'clusters';
 
 export interface LayerVisibility {
   markers: boolean;
   heatmap: boolean;
   clusters: boolean;
-  flow: boolean;
 }
 
 // Types pour le mode Flow - simulation de déplacements

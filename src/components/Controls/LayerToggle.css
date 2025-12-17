@@ -1,66 +1,154 @@
 /* ===================================
-   LAYER TOGGLE - Minimalist
+   LAYER TOGGLE - Liquid Glass Design
+   Premium Glassmorphism
    =================================== */
 
 .layer-toggle {
   display: flex;
-  gap: 4px;
-  padding: 4px;
-  background: rgba(20, 21, 31, 0.85);
-  border: 1px solid rgba(148, 163, 184, 0.1);
-  border-radius: 14px;
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
+  gap: 6px;
+  padding: 6px;
+  background: linear-gradient(135deg,
+      rgba(255, 255, 255, 0.12) 0%,
+      rgba(255, 255, 255, 0.05) 50%,
+      rgba(255, 255, 255, 0.08) 100%);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-radius: 20px;
+  backdrop-filter: blur(24px) saturate(180%);
+  -webkit-backdrop-filter: blur(24px) saturate(180%);
+  box-shadow:
+    0 8px 32px rgba(0, 0, 0, 0.3),
+    inset 0 1px 0 rgba(255, 255, 255, 0.15),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.1);
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.layer-toggle:hover {
+  background: linear-gradient(135deg,
+      rgba(255, 255, 255, 0.15) 0%,
+      rgba(255, 255, 255, 0.07) 50%,
+      rgba(255, 255, 255, 0.1) 100%);
+  border-color: rgba(255, 255, 255, 0.25);
+  box-shadow:
+    0 12px 40px rgba(0, 0, 0, 0.35),
+    inset 0 1px 0 rgba(255, 255, 255, 0.2),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.1),
+    0 0 20px rgba(56, 189, 248, 0.1);
+  transform: translateY(-2px);
 }
 
 .layer-btn {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 40px;
-  height: 40px;
+  width: 44px;
+  height: 44px;
   background: transparent;
-  border: none;
-  border-radius: 10px;
-  color: #64748b;
+  border: 1px solid transparent;
+  border-radius: 14px;
+  color: rgba(148, 163, 184, 0.8);
   cursor: pointer;
-  transition: all 0.15s ease;
+  transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
   position: relative;
+  overflow: hidden;
+}
+
+.layer-btn::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at center,
+      rgba(56, 189, 248, 0) 0%,
+      rgba(56, 189, 248, 0) 100%);
+  opacity: 0;
+  transition: opacity 0.35s ease;
 }
 
 .layer-btn:hover {
-  background: rgba(255, 255, 255, 0.05);
-  color: #94a3b8;
+  background: linear-gradient(135deg,
+      rgba(255, 255, 255, 0.08) 0%,
+      rgba(255, 255, 255, 0.03) 100%);
+  border-color: rgba(255, 255, 255, 0.1);
+  color: #e2e8f0;
+  transform: scale(1.05);
+}
+
+.layer-btn:hover::before {
+  opacity: 1;
+  background: radial-gradient(circle at center,
+      rgba(56, 189, 248, 0.15) 0%,
+      rgba(56, 189, 248, 0) 70%);
 }
 
 .layer-btn.active {
-  background: rgba(56, 189, 248, 0.15);
+  background: linear-gradient(135deg,
+      rgba(56, 189, 248, 0.25) 0%,
+      rgba(56, 189, 248, 0.1) 100%);
+  border-color: rgba(56, 189, 248, 0.4);
   color: #38bdf8;
+  box-shadow:
+    0 0 20px rgba(56, 189, 248, 0.3),
+    inset 0 1px 0 rgba(255, 255, 255, 0.15);
+}
+
+.layer-btn.active::before {
+  opacity: 1;
+  background: radial-gradient(circle at center,
+      rgba(56, 189, 248, 0.3) 0%,
+      rgba(56, 189, 248, 0) 70%);
+  animation: pulse-glow 2s ease-in-out infinite;
+}
+
+@keyframes pulse-glow {
+
+  0%,
+  100% {
+    opacity: 1;
+  }
+
+  50% {
+    opacity: 0.6;
+  }
 }
 
 .layer-btn svg {
-  width: 20px;
-  height: 20px;
+  width: 22px;
+  height: 22px;
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  z-index: 1;
+}
+
+.layer-btn:hover svg {
+  transform: scale(1.1);
+}
+
+.layer-btn.active svg {
+  filter: drop-shadow(0 0 6px rgba(56, 189, 248, 0.6));
 }
 
 .layer-btn-tooltip {
   position: absolute;
-  bottom: calc(100% + 8px);
+  bottom: calc(100% + 12px);
   left: 50%;
-  transform: translateX(-50%);
-  padding: 6px 10px;
-  background: rgba(20, 21, 31, 0.95);
-  border: 1px solid rgba(148, 163, 184, 0.15);
-  border-radius: 8px;
-  font-size: 11px;
+  transform: translateX(-50%) translateY(4px);
+  padding: 8px 14px;
+  background: linear-gradient(135deg,
+      rgba(20, 21, 31, 0.95) 0%,
+      rgba(30, 32, 45, 0.95) 100%);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 12px;
+  font-size: 12px;
   font-weight: 500;
   color: #f1f5f9;
   white-space: nowrap;
   opacity: 0;
   visibility: hidden;
-  transition: all 0.15s ease;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   pointer-events: none;
-  backdrop-filter: blur(8px);
+  backdrop-filter: blur(16px);
+  box-shadow:
+    0 8px 24px rgba(0, 0, 0, 0.4),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1);
 }
 
 .layer-btn-tooltip::after {
@@ -69,11 +157,12 @@
   top: 100%;
   left: 50%;
   transform: translateX(-50%);
-  border: 5px solid transparent;
-  border-top-color: rgba(20, 21, 31, 0.95);
+  border: 6px solid transparent;
+  border-top-color: rgba(30, 32, 45, 0.95);
 }
 
 .layer-btn:hover .layer-btn-tooltip {
   opacity: 1;
   visibility: visible;
+  transform: translateX(-50%) translateY(0);
 }

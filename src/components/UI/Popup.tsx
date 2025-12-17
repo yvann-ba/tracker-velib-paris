@@ -8,7 +8,7 @@ interface PopupProps {
 
 export function Popup({ station, onClose }: PopupProps) {
   const availabilityPercent = Math.round(station.availabilityRatio * 100);
-  
+
   return (
     <div className="station-popup">
       <button className="popup-close" onClick={onClose} aria-label="Close">
@@ -16,7 +16,7 @@ export function Popup({ station, onClose }: PopupProps) {
           <path d="M18 6L6 18M6 6l12 12" />
         </svg>
       </button>
-      
+
       <div className="popup-header">
         <h3 className="popup-title">{station.name}</h3>
         <span className="popup-availability">{availabilityPercent}%</span>
@@ -28,13 +28,13 @@ export function Popup({ station, onClose }: PopupProps) {
           <span className="popup-bike-count">{station.electricBikes}</span>
           <span className="popup-bike-label">Electric</span>
         </div>
-        
+
         <div className="popup-bike mechanical">
           <span className="popup-bike-dot" />
           <span className="popup-bike-count">{station.mechanicalBikes}</span>
           <span className="popup-bike-label">Classic</span>
         </div>
-        
+
         <div className="popup-bike docks">
           <span className="popup-bike-dot" />
           <span className="popup-bike-count">{station.availableDocks}</span>
@@ -43,7 +43,7 @@ export function Popup({ station, onClose }: PopupProps) {
       </div>
 
       <div className="popup-bar">
-        <div 
+        <div
           className="popup-bar-fill"
           style={{ width: `${availabilityPercent}%` }}
         />
