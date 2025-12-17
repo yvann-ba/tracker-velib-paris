@@ -7,11 +7,11 @@ interface HeatmapLayerProps {
   geoJSON: StationGeoJSON;
 }
 
-// Configuration de la couche heatmap
+// Heatmap configuration - minimalist blue/cyan theme
 const heatmapLayerStyle: Omit<HeatmapLayerSpecification, 'id' | 'source'> = {
   type: 'heatmap',
   paint: {
-    // Poids basé sur le nombre total de vélos
+    // Weight based on total bikes
     'heatmap-weight': [
       'interpolate',
       ['linear'],
@@ -22,50 +22,50 @@ const heatmapLayerStyle: Omit<HeatmapLayerSpecification, 'id' | 'source'> = {
       30, 0.8,
       50, 1,
     ],
-    // Intensité basée sur le zoom
+    // Intensity based on zoom
     'heatmap-intensity': [
       'interpolate',
       ['linear'],
       ['zoom'],
-      10, 0.5,
-      13, 1,
-      16, 1.5,
+      10, 0.4,
+      13, 0.8,
+      16, 1.2,
     ],
-    // Couleurs du gradient
+    // Minimalist blue/cyan gradient
     'heatmap-color': [
       'interpolate',
       ['linear'],
       ['heatmap-density'],
       0, 'rgba(0, 0, 0, 0)',
-      0.1, 'rgba(103, 58, 183, 0.4)',      // Violet profond
-      0.2, 'rgba(63, 81, 181, 0.5)',       // Indigo
-      0.3, 'rgba(33, 150, 243, 0.6)',      // Bleu
-      0.4, 'rgba(0, 188, 212, 0.7)',       // Cyan
-      0.5, 'rgba(0, 230, 118, 0.75)',      // Vert émeraude
-      0.6, 'rgba(76, 175, 80, 0.8)',       // Vert
-      0.7, 'rgba(205, 220, 57, 0.85)',     // Lime
-      0.8, 'rgba(255, 193, 7, 0.9)',       // Ambre
-      0.9, 'rgba(255, 152, 0, 0.95)',      // Orange
-      1, 'rgba(244, 67, 54, 1)',           // Rouge
+      0.1, 'rgba(15, 23, 42, 0.3)',        // Dark slate
+      0.2, 'rgba(30, 41, 59, 0.4)',        // Slate 800
+      0.3, 'rgba(51, 65, 85, 0.5)',        // Slate 700
+      0.4, 'rgba(56, 189, 248, 0.4)',      // Cyan 400
+      0.5, 'rgba(56, 189, 248, 0.5)',      // Cyan 400
+      0.6, 'rgba(99, 102, 241, 0.55)',     // Indigo 500
+      0.7, 'rgba(129, 140, 248, 0.6)',     // Indigo 400
+      0.8, 'rgba(167, 139, 250, 0.65)',    // Violet 400
+      0.9, 'rgba(192, 132, 252, 0.7)',     // Purple 400
+      1, 'rgba(236, 72, 153, 0.75)',       // Pink 500
     ],
-    // Rayon basé sur le zoom
+    // Radius based on zoom
     'heatmap-radius': [
       'interpolate',
       ['linear'],
       ['zoom'],
-      10, 20,
-      12, 30,
-      14, 40,
-      16, 50,
+      10, 15,
+      12, 25,
+      14, 35,
+      16, 45,
     ],
-    // Opacité basée sur le zoom
+    // Opacity based on zoom
     'heatmap-opacity': [
       'interpolate',
       ['linear'],
       ['zoom'],
-      10, 0.8,
-      14, 0.7,
-      16, 0.5,
+      10, 0.7,
+      14, 0.5,
+      16, 0.3,
     ],
   },
 };
@@ -73,7 +73,7 @@ const heatmapLayerStyle: Omit<HeatmapLayerSpecification, 'id' | 'source'> = {
 export function HeatmapLayer({ geoJSON }: HeatmapLayerProps) {
   const { current: map } = useMap();
 
-  // Transformer les données pour la heatmap
+  // Transform data for heatmap
   const heatmapData = {
     type: 'FeatureCollection' as const,
     features: geoJSON.features.map((feature) => ({
@@ -88,7 +88,6 @@ export function HeatmapLayer({ geoJSON }: HeatmapLayerProps) {
   };
 
   useEffect(() => {
-    // Force un re-render de la carte quand les données changent
     if (map) {
       map.triggerRepaint();
     }

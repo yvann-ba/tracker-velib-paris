@@ -1,27 +1,32 @@
-.velib-popup {
-  background: linear-gradient(145deg, #1a1a2e 0%, #16213e 100%);
+/* ===================================
+   STATION POPUP - Minimalist
+   =================================== */
+
+.station-popup {
+  background: rgba(20, 21, 31, 0.95);
+  border: 1px solid rgba(148, 163, 184, 0.15);
   border-radius: 16px;
   padding: 20px;
-  min-width: 280px;
-  max-width: 320px;
+  min-width: 260px;
+  max-width: 300px;
+  color: #f1f5f9;
+  font-family: 'SF Pro Display', -apple-system, sans-serif;
+  animation: popup-enter 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
   box-shadow: 
     0 25px 50px -12px rgba(0, 0, 0, 0.5),
-    0 0 0 1px rgba(255, 255, 255, 0.1),
-    inset 0 1px 0 rgba(255, 255, 255, 0.1);
-  position: relative;
-  color: #e0e0e0;
-  font-family: 'JetBrains Mono', 'Fira Code', monospace;
-  animation: popupAppear 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+    0 0 0 1px rgba(56, 189, 248, 0.1);
 }
 
-@keyframes popupAppear {
+@keyframes popup-enter {
   from {
     opacity: 0;
-    transform: scale(0.9) translateY(10px);
+    transform: scale(0.95);
   }
   to {
     opacity: 1;
-    transform: scale(1) translateY(0);
+    transform: scale(1);
   }
 }
 
@@ -32,163 +37,156 @@
   width: 28px;
   height: 28px;
   border: none;
-  background: rgba(255, 255, 255, 0.1);
-  color: #a0a0a0;
-  font-size: 20px;
-  line-height: 1;
-  border-radius: 50%;
+  background: rgba(148, 163, 184, 0.1);
+  border-radius: 8px;
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: all 0.15s ease;
   display: flex;
   align-items: center;
   justify-content: center;
+  color: #64748b;
 }
 
 .popup-close:hover {
-  background: rgba(239, 68, 68, 0.3);
-  color: #ef4444;
-  transform: rotate(90deg);
+  background: rgba(239, 68, 68, 0.15);
+  color: #f87171;
 }
 
+.popup-close svg {
+  width: 14px;
+  height: 14px;
+}
+
+/* Header */
 .popup-header {
   display: flex;
-  align-items: center;
-  gap: 12px;
+  align-items: flex-start;
+  justify-content: space-between;
   margin-bottom: 16px;
-  padding-right: 30px;
-}
-
-.popup-indicator {
-  width: 12px;
-  height: 12px;
-  border-radius: 50%;
-  flex-shrink: 0;
-  box-shadow: 0 0 10px currentColor;
-  animation: pulse 2s infinite;
-}
-
-@keyframes pulse {
-  0%, 100% {
-    opacity: 1;
-    box-shadow: 0 0 10px currentColor;
-  }
-  50% {
-    opacity: 0.7;
-    box-shadow: 0 0 20px currentColor;
-  }
+  padding-right: 32px;
 }
 
 .popup-title {
   margin: 0;
   font-size: 14px;
   font-weight: 600;
-  color: #ffffff;
-  line-height: 1.3;
+  color: #f1f5f9;
+  line-height: 1.4;
+  max-width: 180px;
 }
 
-.popup-content {
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
+.popup-availability {
+  font-size: 14px;
+  font-weight: 600;
+  color: #38bdf8;
+  font-family: 'SF Mono', monospace;
 }
 
-.popup-stats {
+/* Bikes grid */
+.popup-bikes {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 12px;
+  gap: 8px;
+  margin-bottom: 14px;
 }
 
-.popup-stat {
+.popup-bike {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 6px;
+  gap: 4px;
   padding: 12px 8px;
-  background: rgba(255, 255, 255, 0.05);
-  border-radius: 12px;
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  transition: all 0.2s ease;
+  background: rgba(148, 163, 184, 0.05);
+  border: 1px solid rgba(148, 163, 184, 0.08);
+  border-radius: 10px;
+  transition: all 0.15s ease;
 }
 
-.popup-stat:hover {
-  background: rgba(255, 255, 255, 0.08);
-  transform: translateY(-2px);
+.popup-bike:hover {
+  background: rgba(148, 163, 184, 0.08);
 }
 
-.popup-stat-icon {
-  font-size: 20px;
-  filter: grayscale(0.2);
+.popup-bike-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  margin-bottom: 2px;
 }
 
-.popup-stat-info {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 2px;
+.popup-bike.electric .popup-bike-dot {
+  background: #38bdf8;
+  box-shadow: 0 0 8px rgba(56, 189, 248, 0.5);
 }
 
-.popup-stat-value {
+.popup-bike.mechanical .popup-bike-dot {
+  background: #e2e8f0;
+  box-shadow: 0 0 8px rgba(226, 232, 240, 0.3);
+}
+
+.popup-bike.docks .popup-bike-dot {
+  background: #a78bfa;
+  box-shadow: 0 0 8px rgba(167, 139, 250, 0.3);
+}
+
+.popup-bike-count {
   font-size: 18px;
-  font-weight: 700;
-  color: #ffffff;
+  font-weight: 600;
+  color: #f1f5f9;
+  font-family: 'SF Mono', monospace;
 }
 
-.popup-stat-label {
-  font-size: 10px;
-  color: #808080;
+.popup-bike-label {
+  font-size: 9px;
+  font-weight: 500;
+  color: #64748b;
   text-transform: uppercase;
   letter-spacing: 0.5px;
+}
+
+/* Progress bar */
+.popup-bar {
+  height: 4px;
+  background: rgba(148, 163, 184, 0.1);
+  border-radius: 2px;
+  overflow: hidden;
+  margin-bottom: 12px;
+}
+
+.popup-bar-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #38bdf8, #818cf8);
+  border-radius: 2px;
+  transition: width 0.3s ease;
+}
+
+/* Footer */
+.popup-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 }
 
 .popup-capacity {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-}
-
-.popup-capacity-bar {
-  height: 8px;
-  background: rgba(255, 255, 255, 0.1);
-  border-radius: 4px;
-  overflow: hidden;
-}
-
-.popup-capacity-fill {
-  height: 100%;
-  border-radius: 4px;
-  transition: width 0.5s ease-out;
-  box-shadow: 0 0 10px currentColor;
-}
-
-.popup-capacity-text {
   font-size: 12px;
-  color: #a0a0a0;
-  text-align: center;
+  color: #64748b;
+  font-family: 'SF Mono', monospace;
 }
 
 .popup-status {
-  display: flex;
-  justify-content: center;
-}
-
-.status-badge {
-  padding: 6px 14px;
-  border-radius: 20px;
-  font-size: 11px;
+  font-size: 10px;
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.5px;
+  padding: 4px 10px;
+  border-radius: 12px;
 }
 
-.status-badge.active {
-  background: rgba(16, 185, 129, 0.2);
-  color: #10b981;
-  border: 1px solid rgba(16, 185, 129, 0.3);
+.popup-status.active {
+  background: rgba(34, 197, 94, 0.15);
+  color: #4ade80;
 }
 
-.status-badge.inactive {
-  background: rgba(239, 68, 68, 0.2);
-  color: #ef4444;
-  border: 1px solid rgba(239, 68, 68, 0.3);
+.popup-status.inactive {
+  background: rgba(239, 68, 68, 0.15);
+  color: #f87171;
 }
-

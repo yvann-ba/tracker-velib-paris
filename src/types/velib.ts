@@ -98,12 +98,44 @@ export interface ClusterProperties {
 }
 
 // Types pour les couches de visualisation
-export type LayerType = 'markers' | 'heatmap' | 'clusters';
+export type LayerType = 'markers' | 'heatmap' | 'clusters' | 'flow';
 
 export interface LayerVisibility {
   markers: boolean;
   heatmap: boolean;
   clusters: boolean;
+  flow: boolean;
+}
+
+// Types pour le mode Flow - simulation de déplacements
+export type BikeType = 'mechanical' | 'electric';
+
+export interface BikeTrip {
+  id: string;
+  bikeType: BikeType;
+  startStation: {
+    id: string;
+    lat: number;
+    lon: number;
+    name: string;
+  };
+  endStation: {
+    id: string;
+    lat: number;
+    lon: number;
+    name: string;
+  };
+  progress: number; // 0 to 1
+  speed: number; // km/h estimated
+  startTime: number;
+  duration: number; // ms
+}
+
+export interface FlowConfig {
+  maxTrips: number;
+  tripDurationMin: number; // ms
+  tripDurationMax: number; // ms
+  spawnRate: number; // trips per second
 }
 
 // Statistiques globales

@@ -80,13 +80,14 @@ export function getClusterRadius(pointCount: number): number {
 
 /**
  * Retourne une couleur pour un cluster basée sur le ratio de disponibilité
+ * New minimalist blue theme
  */
 export function getClusterColor(totalBikes: number, capacity: number): string {
   const ratio = capacity > 0 ? totalBikes / capacity : 0;
   
-  if (ratio >= 0.5) return '#10b981'; // Emerald
-  if (ratio >= 0.3) return '#84cc16'; // Lime
-  if (ratio >= 0.15) return '#f59e0b'; // Amber
-  return '#ef4444'; // Rouge
+  if (ratio >= 0.5) return '#38bdf8'; // Bright cyan - well stocked
+  if (ratio >= 0.3) return '#818cf8'; // Purple/indigo - moderate
+  if (ratio >= 0.15) return '#f59e0b'; // Amber - low
+  return '#f87171'; // Red - critical
 }
 

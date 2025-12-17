@@ -1,207 +1,167 @@
+/* ===================================
+   STATS PANEL - Ultra Minimal
+   =================================== */
+
 .stats-panel {
-  background: linear-gradient(145deg, rgba(26, 26, 46, 0.95) 0%, rgba(22, 33, 62, 0.95) 100%);
-  border-radius: 20px;
-  padding: 20px;
-  min-width: 280px;
-  box-shadow: 
-    0 20px 60px rgba(0, 0, 0, 0.5),
-    0 0 0 1px rgba(255, 255, 255, 0.1),
-    inset 0 1px 0 rgba(255, 255, 255, 0.1);
-  backdrop-filter: blur(10px);
-  font-family: 'JetBrains Mono', 'Fira Code', monospace;
-}
-
-.stats-header {
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  margin-bottom: 20px;
-  padding-bottom: 16px;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  gap: 24px;
+  padding: 14px 20px;
+  background: rgba(20, 21, 31, 0.85);
+  border: 1px solid rgba(148, 163, 184, 0.1);
+  border-radius: 16px;
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
 }
 
-.stats-title {
+/* Individual stat */
+.stat-item {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.stat-value {
+  font-size: 18px;
+  font-weight: 600;
+  color: #f1f5f9;
+  font-family: 'SF Mono', 'Fira Code', monospace;
+  letter-spacing: -0.5px;
+}
+
+.stat-value.accent {
+  color: #38bdf8;
+}
+
+.stat-label {
+  font-size: 10px;
+  font-weight: 500;
+  color: #64748b;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+/* Bike breakdown */
+.stat-bikes {
+  display: flex;
+  gap: 12px;
+}
+
+.stat-bike {
   display: flex;
   align-items: center;
-  gap: 10px;
-  font-size: 16px;
-  font-weight: 700;
-  color: #ffffff;
+  gap: 6px;
 }
 
-.stats-icon {
-  font-size: 20px;
+.stat-bike-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
 }
 
-.refresh-button {
-  width: 36px;
-  height: 36px;
-  border-radius: 10px;
-  border: 1px solid rgba(255, 255, 255, 0.15);
-  background: rgba(255, 255, 255, 0.05);
-  color: #a0a0a0;
-  cursor: pointer;
+.stat-bike-dot.electric {
+  background: #38bdf8;
+  box-shadow: 0 0 6px rgba(56, 189, 248, 0.5);
+}
+
+.stat-bike-dot.mechanical {
+  background: #e2e8f0;
+  box-shadow: 0 0 6px rgba(226, 232, 240, 0.3);
+}
+
+.stat-bike-value {
+  font-size: 13px;
+  font-weight: 500;
+  color: #94a3b8;
+  font-family: 'SF Mono', monospace;
+}
+
+/* Divider */
+.stat-divider {
+  width: 1px;
+  height: 32px;
+  background: rgba(148, 163, 184, 0.15);
+}
+
+/* Refresh button */
+.stats-refresh {
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: all 0.2s ease;
+  width: 36px;
+  height: 36px;
+  background: transparent;
+  border: 1px solid rgba(148, 163, 184, 0.15);
+  border-radius: 10px;
+  color: #64748b;
+  cursor: pointer;
+  transition: all 0.15s ease;
 }
 
-.refresh-button:hover:not(:disabled) {
-  background: rgba(16, 185, 129, 0.2);
-  border-color: rgba(16, 185, 129, 0.4);
-  color: #10b981;
+.stats-refresh:hover:not(:disabled) {
+  background: rgba(56, 189, 248, 0.1);
+  border-color: rgba(56, 189, 248, 0.3);
+  color: #38bdf8;
 }
 
-.refresh-button:disabled {
-  cursor: not-allowed;
+.stats-refresh:disabled {
   opacity: 0.5;
+  cursor: not-allowed;
 }
 
-.refresh-button svg {
-  width: 18px;
-  height: 18px;
+.stats-refresh svg {
+  width: 16px;
+  height: 16px;
 }
 
-.refresh-button.loading svg {
+.stats-refresh.loading svg {
   animation: spin 1s linear infinite;
 }
 
 @keyframes spin {
-  to {
-    transform: rotate(360deg);
-  }
+  to { transform: rotate(360deg); }
 }
 
-.stats-grid {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 12px;
-  margin-bottom: 16px;
-}
-
-.stat-card {
-  background: rgba(255, 255, 255, 0.05);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  border-radius: 14px;
-  padding: 14px;
-  transition: all 0.2s ease;
-}
-
-.stat-card:hover {
-  background: rgba(255, 255, 255, 0.08);
-  transform: translateY(-2px);
-}
-
-.stat-card.primary {
-  grid-column: span 2;
-  background: linear-gradient(135deg, rgba(16, 185, 129, 0.15) 0%, rgba(6, 78, 59, 0.15) 100%);
-  border-color: rgba(16, 185, 129, 0.2);
-}
-
-.stat-value {
-  font-size: 24px;
-  font-weight: 700;
-  color: #ffffff;
-  margin-bottom: 4px;
-}
-
-.stat-card.primary .stat-value {
-  font-size: 32px;
-  color: #10b981;
-  text-shadow: 0 0 20px rgba(16, 185, 129, 0.5);
-}
-
-.stat-value.availability {
-  color: #84cc16;
-}
-
-.stat-label {
-  font-size: 11px;
-  color: #808080;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-  margin-bottom: 6px;
-}
-
-.stat-sub {
-  font-size: 10px;
-  color: #606060;
-}
-
-.stat-breakdown {
-  display: flex;
-  gap: 16px;
-  margin-top: 8px;
-  font-size: 13px;
-}
-
-.stat-breakdown .mechanical {
-  color: #60a5fa;
-}
-
-.stat-breakdown .electric {
-  color: #fbbf24;
-}
-
-.availability-bar {
-  height: 6px;
-  background: rgba(255, 255, 255, 0.1);
-  border-radius: 3px;
-  overflow: hidden;
-  margin-top: 8px;
-}
-
-.availability-fill {
-  height: 100%;
-  background: linear-gradient(90deg, #84cc16, #10b981);
-  border-radius: 3px;
-  transition: width 0.5s ease-out;
-}
-
-.stats-footer {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding-top: 14px;
-  border-top: 1px solid rgba(255, 255, 255, 0.1);
-  font-size: 10px;
-  color: #606060;
-}
-
-.last-update {
+/* Time */
+.stat-time {
   display: flex;
   align-items: center;
   gap: 8px;
 }
 
-.update-dot {
-  width: 8px;
-  height: 8px;
-  background: #10b981;
+.stat-time-dot {
+  width: 6px;
+  height: 6px;
+  background: #22c55e;
   border-radius: 50%;
-  animation: pulse 2s infinite;
+  animation: pulse 2s ease-in-out infinite;
 }
 
 @keyframes pulse {
-  0%, 100% {
-    opacity: 1;
-    box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.4);
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
+
+.stat-time-value {
+  font-size: 12px;
+  color: #64748b;
+  font-family: 'SF Mono', monospace;
+}
+
+/* Responsive */
+@media (max-width: 640px) {
+  .stats-panel {
+    flex-wrap: wrap;
+    gap: 16px;
+    padding: 12px 16px;
   }
-  50% {
-    opacity: 0.7;
-    box-shadow: 0 0 0 6px rgba(16, 185, 129, 0);
+  
+  .stat-divider {
+    display: none;
+  }
+  
+  .stat-item {
+    flex: 1;
+    min-width: 60px;
   }
 }
-
-.data-source a {
-  color: #10b981;
-  text-decoration: none;
-  transition: color 0.2s ease;
-}
-
-.data-source a:hover {
-  color: #34d399;
-  text-decoration: underline;
-}
-

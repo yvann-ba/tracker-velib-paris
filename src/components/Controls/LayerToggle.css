@@ -1,94 +1,79 @@
+/* ===================================
+   LAYER TOGGLE - Minimalist
+   =================================== */
+
 .layer-toggle {
-  background: linear-gradient(145deg, rgba(26, 26, 46, 0.95) 0%, rgba(22, 33, 62, 0.95) 100%);
-  border-radius: 16px;
-  padding: 16px;
-  min-width: 180px;
-  box-shadow: 
-    0 10px 40px rgba(0, 0, 0, 0.4),
-    0 0 0 1px rgba(255, 255, 255, 0.1),
-    inset 0 1px 0 rgba(255, 255, 255, 0.1);
-  backdrop-filter: blur(10px);
+  display: flex;
+  gap: 4px;
+  padding: 4px;
+  background: rgba(20, 21, 31, 0.85);
+  border: 1px solid rgba(148, 163, 184, 0.1);
+  border-radius: 14px;
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
 }
 
-.layer-toggle-header {
+.layer-btn {
   display: flex;
   align-items: center;
-  gap: 10px;
-  margin-bottom: 14px;
-  padding-bottom: 12px;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-}
-
-.layer-toggle-icon {
-  font-size: 18px;
-}
-
-.layer-toggle-title {
-  font-size: 14px;
-  font-weight: 600;
-  color: #ffffff;
-  font-family: 'JetBrains Mono', monospace;
-  text-transform: uppercase;
-  letter-spacing: 1px;
-}
-
-.layer-toggle-options {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-}
-
-.layer-option {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  padding: 10px 12px;
-  background: rgba(255, 255, 255, 0.05);
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  background: transparent;
+  border: none;
   border-radius: 10px;
+  color: #64748b;
   cursor: pointer;
-  transition: all 0.2s ease;
-  color: #a0a0a0;
-  font-family: 'JetBrains Mono', monospace;
+  transition: all 0.15s ease;
+  position: relative;
 }
 
-.layer-option:hover {
-  background: rgba(255, 255, 255, 0.1);
-  border-color: rgba(255, 255, 255, 0.15);
-  transform: translateX(4px);
+.layer-btn:hover {
+  background: rgba(255, 255, 255, 0.05);
+  color: #94a3b8;
 }
 
-.layer-option.active {
-  background: rgba(16, 185, 129, 0.15);
-  border-color: rgba(16, 185, 129, 0.3);
-  color: #ffffff;
+.layer-btn.active {
+  background: rgba(56, 189, 248, 0.15);
+  color: #38bdf8;
 }
 
-.layer-option-icon {
-  font-size: 16px;
-  width: 24px;
-  text-align: center;
+.layer-btn svg {
+  width: 20px;
+  height: 20px;
 }
 
-.layer-option-label {
-  flex: 1;
-  font-size: 12px;
+.layer-btn-tooltip {
+  position: absolute;
+  bottom: calc(100% + 8px);
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 6px 10px;
+  background: rgba(20, 21, 31, 0.95);
+  border: 1px solid rgba(148, 163, 184, 0.15);
+  border-radius: 8px;
+  font-size: 11px;
   font-weight: 500;
+  color: #f1f5f9;
+  white-space: nowrap;
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.15s ease;
+  pointer-events: none;
+  backdrop-filter: blur(8px);
 }
 
-.layer-option-indicator {
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  transition: all 0.2s ease;
+.layer-btn-tooltip::after {
+  content: '';
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  border: 5px solid transparent;
+  border-top-color: rgba(20, 21, 31, 0.95);
 }
 
-.layer-option-indicator.on {
-  background: #10b981;
-  box-shadow: 0 0 10px #10b981;
+.layer-btn:hover .layer-btn-tooltip {
+  opacity: 1;
+  visibility: visible;
 }
-
-.layer-option-indicator.off {
-  background: rgba(255, 255, 255, 0.2);
-}
-

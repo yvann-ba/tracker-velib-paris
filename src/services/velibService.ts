@@ -213,14 +213,13 @@ export function calculateStats(stations: Station[]): VelibStats {
 
 /**
  * Returns a color based on availability ratio
- * Green = many bikes, Red = few bikes
+ * Minimalist blue/cyan theme
  */
 export function getAvailabilityColor(ratio: number): string {
-  if (ratio >= 0.6) return '#10b981'; // Emerald green
-  if (ratio >= 0.4) return '#84cc16'; // Lime
-  if (ratio >= 0.2) return '#f59e0b'; // Amber
-  if (ratio >= 0.1) return '#f97316'; // Orange
-  return '#ef4444'; // Red
+  if (ratio >= 0.5) return '#38bdf8'; // Cyan - well stocked
+  if (ratio >= 0.3) return '#818cf8'; // Indigo - moderate
+  if (ratio >= 0.15) return '#f59e0b'; // Amber - low
+  return '#f87171'; // Red - critical
 }
 
 /**

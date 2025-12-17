@@ -1,5 +1,4 @@
 import type { Station } from '../../types/velib';
-import { getAvailabilityColor } from '../../services/velibService';
 import './Popup.css';
 
 interface PopupProps {
@@ -8,71 +7,55 @@ interface PopupProps {
 }
 
 export function Popup({ station, onClose }: PopupProps) {
-  const availabilityColor = getAvailabilityColor(station.availabilityRatio);
+  const availabilityPercent = Math.round(station.availabilityRatio * 100);
   
   return (
-    <div className="velib-popup">
+    <div className="station-popup">
       <button className="popup-close" onClick={onClose} aria-label="Close">
-        ×
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+          <path d="M18 6L6 18M6 6l12 12" />
+        </svg>
       </button>
       
       <div className="popup-header">
-        <div 
-          className="popup-indicator"
-          style={{ backgroundColor: availabilityColor }}
-        />
         <h3 className="popup-title">{station.name}</h3>
+        <span className="popup-availability">{availabilityPercent}%</span>
       </div>
 
-      <div className="popup-content">
-        <div className="popup-stats">
-          <div className="popup-stat">
-            <div className="popup-stat-icon mechanical">🚲</div>
-            <div className="popup-stat-info">
-              <span className="popup-stat-value">{station.mechanicalBikes}</span>
-              <span className="popup-stat-label">Mechanical</span>
-            </div>
-          </div>
-          
-          <div className="popup-stat">
-            <div className="popup-stat-icon electric">⚡</div>
-            <div className="popup-stat-info">
-              <span className="popup-stat-value">{station.electricBikes}</span>
-              <span className="popup-stat-label">Electric</span>
-            </div>
-          </div>
-          
-          <div className="popup-stat">
-            <div className="popup-stat-icon docks">🅿️</div>
-            <div className="popup-stat-info">
-              <span className="popup-stat-value">{station.availableDocks}</span>
-              <span className="popup-stat-label">Docks</span>
-            </div>
-          </div>
+      <div className="popup-bikes">
+        <div className="popup-bike electric">
+          <span className="popup-bike-dot" />
+          <span className="popup-bike-count">{station.electricBikes}</span>
+          <span className="popup-bike-label">Electric</span>
         </div>
+        
+        <div className="popup-bike mechanical">
+          <span className="popup-bike-dot" />
+          <span className="popup-bike-count">{station.mechanicalBikes}</span>
+          <span className="popup-bike-label">Classic</span>
+        </div>
+        
+        <div className="popup-bike docks">
+          <span className="popup-bike-dot" />
+          <span className="popup-bike-count">{station.availableDocks}</span>
+          <span className="popup-bike-label">Docks</span>
+        </div>
+      </div>
 
-        <div className="popup-capacity">
-          <div className="popup-capacity-bar">
-            <div 
-              className="popup-capacity-fill"
-              style={{ 
-                width: `${station.availabilityRatio * 100}%`,
-                backgroundColor: availabilityColor,
-              }}
-            />
-          </div>
-          <span className="popup-capacity-text">
-            {station.totalBikes} / {station.capacity} bikes
-          </span>
-        </div>
+      <div className="popup-bar">
+        <div 
+          className="popup-bar-fill"
+          style={{ width: `${availabilityPercent}%` }}
+        />
+      </div>
 
-        <div className="popup-status">
-          {station.isRenting && station.isReturning ? (
-            <span className="status-badge active">Station Active</span>
-          ) : (
-            <span className="status-badge inactive">Station Inactive</span>
-          )}
-        </div>
+      <div className="popup-footer">
+        <span className="popup-capacity">{station.totalBikes} / {station.capacity}</span>
+        {station.isRenting && station.isReturning ? (
+          <span className="popup-status active">Active</span>
+        ) : (
+          <span className="popup-status inactive">Offline</span>
+        )}
       </div>
     </div>
   );

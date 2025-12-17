@@ -1,32 +1,34 @@
 import { useState, useCallback, useRef, useEffect } from 'react';
 import Map, { NavigationControl } from 'react-map-gl/mapbox';
 import type { MapRef, ViewStateChangeEvent } from 'react-map-gl/mapbox';
-import type { Station, LayerVisibility, StationGeoJSON } from '../../types/velib';
+import type { Station, LayerVisibility, StationGeoJSON, BikeTrip } from '../../types/velib';
 import { MarkersLayer } from './MarkersLayer';
 import { HeatmapLayer } from './HeatmapLayer';
 import { ClustersLayer } from './ClustersLayer';
+import { FlowLayer } from './FlowLayer';
 import { Popup } from '../UI/Popup';
 import 'mapbox-gl/dist/mapbox-gl.css';
 import './MapContainer.css';
 
 const MAPBOX_TOKEN = import.meta.env.VITE_MAPBOX_TOKEN;
 
-// Centre de Paris
+// Centre de Paris - vue légèrement inclinée
 const INITIAL_VIEW_STATE = {
   latitude: 48.8566,
   longitude: 2.3522,
-  zoom: 12,
+  zoom: 12.5,
   bearing: 0,
-  pitch: 45,
+  pitch: 0, // Flat view for cleaner look
 };
 
 interface MapContainerProps {
   geoJSON: StationGeoJSON;
   layerVisibility: LayerVisibility;
   isLoading: boolean;
+  trips: BikeTrip[];
 }
 
-export function MapContainer({ geoJSON, layerVisibility, isLoading }: MapContainerProps) {
+export function MapContainer({ geoJSON, layerVisibility, isLoading, trips }: MapContainerProps) {
   const mapRef = useRef<MapRef>(null);
   const [viewState, setViewState] = useState(INITIAL_VIEW_STATE);
   const [selectedStation, setSelectedStation] = useState<Station | null>(null);
@@ -40,11 +42,10 @@ export function MapContainer({ geoJSON, layerVisibility, isLoading }: MapContain
   const handleStationClick = useCallback((station: Station) => {
     setSelectedStation(station);
     
-    // Animation vers la station
     mapRef.current?.flyTo({
       center: [station.lon, station.lat],
       zoom: Math.max(viewState.zoom, 15),
-      duration: 1000,
+      duration: 800,
     });
   }, [viewState.zoom]);
 
@@ -64,7 +65,7 @@ export function MapContainer({ geoJSON, layerVisibility, isLoading }: MapContain
     setMapLoaded(true);
   }, []);
 
-  // Fermer le popup quand on clique ailleurs sur la carte
+  // Close popup on Escape
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === 'Escape') {
@@ -75,7 +76,7 @@ export function MapContainer({ geoJSON, layerVisibility, isLoading }: MapContain
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, []);
 
-  // Obtenir les bounds de la carte pour les clusters
+  // Get map bounds for clusters
   const getBounds = useCallback((): [number, number, number, number] => {
     const map = mapRef.current?.getMap();
     if (!map) {
@@ -98,7 +99,7 @@ export function MapContainer({ geoJSON, layerVisibility, isLoading }: MapContain
       {isLoading && !mapLoaded && (
         <div className="map-loading">
           <div className="loading-spinner" />
-          <span>Loading map...</span>
+          <span>Loading...</span>
         </div>
       )}
       
@@ -115,16 +116,16 @@ export function MapContainer({ geoJSON, layerVisibility, isLoading }: MapContain
         minZoom={10}
         attributionControl={false}
       >
-        <NavigationControl position="top-right" showCompass={true} />
+        <NavigationControl position="top-right" showCompass={false} />
 
         {mapLoaded && (
           <>
-            {/* Couche Heatmap - rendue en premier (dessous) */}
+            {/* Heatmap layer (bottom) */}
             {layerVisibility.heatmap && (
               <HeatmapLayer geoJSON={geoJSON} />
             )}
 
-            {/* Couche Clusters */}
+            {/* Clusters layer */}
             {layerVisibility.clusters && (
               <ClustersLayer
                 geoJSON={geoJSON}
@@ -136,7 +137,7 @@ export function MapContainer({ geoJSON, layerVisibility, isLoading }: MapContain
               />
             )}
 
-            {/* Couche Markers - rendue en dernier (dessus) */}
+            {/* Markers layer */}
             {layerVisibility.markers && !layerVisibility.clusters && (
               <MarkersLayer
                 geoJSON={geoJSON}
@@ -145,11 +146,16 @@ export function MapContainer({ geoJSON, layerVisibility, isLoading }: MapContain
                 onMouseLeave={handleMouseLeave}
               />
             )}
+
+            {/* Flow layer - animated bike trips */}
+            {layerVisibility.flow && (
+              <FlowLayer trips={trips} />
+            )}
           </>
         )}
       </Map>
 
-      {/* Popup d'information */}
+      {/* Station popup */}
       {selectedStation && (
         <div 
           className="popup-overlay"
@@ -165,11 +171,11 @@ export function MapContainer({ geoJSON, layerVisibility, isLoading }: MapContain
         </div>
       )}
 
-      {/* Real-time data indicator */}
+      {/* Refresh indicator */}
       {isLoading && mapLoaded && (
         <div className="refresh-indicator">
           <div className="refresh-spinner" />
-          <span>Updating...</span>
+          <span>Syncing...</span>
         </div>
       )}
     </div>
